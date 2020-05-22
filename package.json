@@ -1,0 +1,23 @@
+{
+  "name": "statusmachine",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "git@slab.venix.dev:venix/statusmachine.git",
+  "author": "Daave <daave@widgetbot.io>",
+  "scripts": {
+    "dev": "nodemon",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "discord.js": "^12.2.0",
+    "envuments": "^1.0.10",
+    "zenith-ts": "^0.10.8"
+  },
+  "devDependencies": {
+    "@types/node": "^13.13.4",
+    "nodemon": "^2.0.2",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.8.3"
+  }
+}
