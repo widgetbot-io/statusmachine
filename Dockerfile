@@ -8,6 +8,7 @@ COPY . ./
 
 RUN yarn install
 RUN yarn build
+RUN ls
 
 FROM node:13-alpine as release
 
