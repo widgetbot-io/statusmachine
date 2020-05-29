@@ -57,7 +57,15 @@ export default class extends BaseCommand {
             }
             return helper.send(embed);
         } else if (data.length === 0) {
-            return helper.send('There are currently no incidents.');
+            let embed = new MessageEmbed()
+                .setColor('#2684ff')
+                .setTitle('View Full Incident Report')
+                .setURL(helper.client.settings.embeds.statusPageUrl)
+                .setThumbnail(helper.client.settings.embeds.thumbnail)
+                .setAuthor('WidgetBot', helper.client.settings.embeds.thumbnail)
+                .setDescription(`There are no incidents occurring currently.`)
+
+            return helper.send(embed);
         }
     }
 
