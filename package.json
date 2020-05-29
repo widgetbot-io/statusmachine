@@ -4,6 +4,30 @@
   "main": "index.js",
   "repository": "git@slab.venix.dev:venix/statusmachine.git",
   "author": "Daave <daave@widgetbot.io>",
+  "contributors": [
+    {
+      "name": "Daave",
+      "email": "daave@widgetbot.io",
+      "url": "https://daave.dev"
+    },
+    {
+      "name": "Rie Takahashi",
+      "email": "megumin@megu.dev",
+      "url": "https://twitter.com/meguminsama"
+    }
+  ],
+  "maintainers": [
+    {
+      "name": "Daave",
+      "email": "daave@widgetbot.io",
+      "url": "https://daave.dev"
+    },
+    {
+      "name": "Rie Takahashi",
+      "email": "megumin@megu.dev",
+      "url": "https://twitter.com/meguminsama"
+    }
+  ],
   "scripts": {
     "dev": "nodemon",
     "build": "tsc"
