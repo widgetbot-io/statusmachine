@@ -33,19 +33,28 @@ export default class extends BaseCommand {
                 .setAuthor('WidgetBot', helper.client.settings.embeds.thumbnail)
                 .setDescription(`There ${textOptions[0]} ${data.length} ${textOptions[1]} occurring currently.`)
                 .addFields(
-                    data.slice(0, 4) //limit to four entries & sort by date
-                        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+                    data.slice(-6) //limit to six entries & sort by date
+                        .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
                         .map((incident, index) => {
                             return {
                                 name: `\u26A0 Incident #${index + 1}`,
-                                value: `Title: ${incident.name}\n` +
+                                value: `${incident.name}\n` +
                                     `Status: ${incident.status}\n` +
                                     `Impact: ${incident.impact}\n` +
                                     `[View Incident](${incident.shortlink})`,
                                 inline: true
                             }
-                        })
+                        }),
                 );
+            if (data.length > 6) {
+                let remainingIncidents = data.length - 6;
+                let innerText = (remainingIncidents === 1) ? ['is', 'incident'] : ['are', 'incidents'];
+                embed.addField(
+                    'More Incidents',
+                    `There ${innerText[0]} ${data.length - 6} more ${innerText[1]}!\n` +
+                    `You can check by [clicking here.](${helper.client.settings.embeds.statusPageUrl})`
+                );
+            }
             return helper.send(embed);
         } else if (data.length === 0) {
             return helper.send('There are currently no incidents.');
