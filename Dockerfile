@@ -8,11 +8,13 @@ COPY . ./
 
 RUN yarn install
 RUN yarn build
+RUN ls
 
 FROM node:13-alpine as release
 
-COPY --from=builder compiled compiled
-COPY --from=builder package.json .
-COPY --from=builder yarn.lock .
+COPY --from=builder /app/compiled compiled
+COPY --from=builder /app/package.json .
+COPY --from=builder /app/yarn.lock .
 
+RUN yarn --production-only
 CMD yarn start
