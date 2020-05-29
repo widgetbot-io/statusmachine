@@ -31,7 +31,7 @@ export enum Status {
     VERIFYING = 'verifying',
     MONITORING = 'monitoring',
     COMPLETED = 'completed',
-    POSTMORTEM = 'postmorten',
+    POSTMORTEM = 'postmortem',
     UPDATE = 'update'
 }
 
