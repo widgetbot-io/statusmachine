@@ -5,8 +5,8 @@ export class Settings extends BaseEntity {
 	@PrimaryColumn({ unique: true })
 	snowflake!: string;
 
-	@Column()
-	role!: string;
+	@Column({ nullable: true })
+	role?: string;
 
 	@Column()
 	oauthKey!: string;
