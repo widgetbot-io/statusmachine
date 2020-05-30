@@ -9,9 +9,9 @@ export class Settings extends BaseEntity {
 	role!: string;
 
 	@Column()
-	lastName!: string;
+	oauthKey!: string;
 
 	@Column()
-	age!: number;
+	pageId!: number;
 
 }

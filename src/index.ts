@@ -1,7 +1,5 @@
 import {DiscordClient} from "./DiscordClient";
-import {Envuments} from "envuments";
 import {Config} from './Classes/Config';
-import {RedisOptions} from 'ioredis';
 
 new DiscordClient({
     bot: {

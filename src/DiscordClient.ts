@@ -3,6 +3,9 @@ import {Settings} from './interfaces';
 import {Connection, createConnection} from 'typeorm';
 import {RedisOptions} from 'ioredis';
 import {Config} from './Classes/Config';
+import * as Models from './Models';
+
+const models = Object.keys(Models)
 
 export class DiscordClient {
     public bot: Bot<DiscordClient> = new Bot(this.settings.bot, this);
@@ -14,6 +17,7 @@ export class DiscordClient {
         try {
             this.db = await createConnection({
                 ...this.settings.database,
+                entities: models,
                 cache: {
                     type: 'ioredis',
                     options: <RedisOptions>{
