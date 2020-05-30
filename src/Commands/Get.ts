@@ -25,6 +25,7 @@ export default class extends BaseCommand {
 
         let { data } = await StatusPage.getIncidents(settings);
         data = data.filter(d => maintenance && d.impact === 'maintenance')
+        console.log(data)
 
         if (data.length > 0) {
             let textOptions = (data.length === 1) ? ['is', 'incident'] : ['are', 'incidents'];
@@ -75,6 +76,6 @@ export default class extends BaseCommand {
     }
 
     async hasPermission(message: Message): Promise<boolean> {
-        return false;
+        return !!message.member && message.member.hasPermission('MANAGE_GUILD', { checkAdmin: true, checkOwner: true })
     }
 }

@@ -28,6 +28,7 @@ export class StatusPage {
     }
 
     static async getIncidents(settings: StatusPageSettings) {
+        console.log(settings)
         return this.client.get<GetIncidentsReturn[]>(`pages/${settings.pageId}/incidents`, {
             headers: {
                 'Authorization': `OAuth ${settings.oauthKey}`,

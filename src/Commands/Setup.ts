@@ -45,8 +45,9 @@ export default class Setup extends BaseCommand {
 				await helper.send(`Only one page attached to this page, defaulting to \`${p.name}  - ${p.domain || 'No domain specified'} (${p.id})\``)
 				await new Promise(r => setTimeout(() => r(), 2000))
 			} else {
-				pageId = await Setup.askQuestion(Setup.generatePagesMessage(pages), helper, (t) => typeof t === 'number')
-				if (!pageId) return helper.send('You took too long to choose a page.')
+				const index = await Setup.askQuestion(Setup.generatePagesMessage(pages), helper)
+				if (!index) return helper.send('You took too long to choose a page.')
+				pageId = pages[parseInt(index) -1].id
 			}
 
 			await repo.save({
@@ -59,6 +60,7 @@ export default class Setup extends BaseCommand {
 			await helper.send('StatusMachine is now setup!')
 		} catch (e) {
 			if (message) await message.delete()
+			console.error(e)
 			return helper.send('An unexpected error occurred, please report it to my developers (>>support)')
 		}
 	}
