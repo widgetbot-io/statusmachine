@@ -1,6 +1,6 @@
 import {BaseCommand, Command, CommandHelper, Administration, FlagArgument} from 'zenith-ts'
 import {Message, MessageEmbed} from 'discord.js'
-import {DiscordClient} from '../DiscordClient';
+import {Client} from '../Client';
 import {StatusPage} from '../Classes/StatusPage';
 
 @Command({
@@ -16,7 +16,7 @@ import {StatusPage} from '../Classes/StatusPage';
     module: 'Administration'
 })
 export default class extends BaseCommand {
-    async runCommand(helper: CommandHelper<DiscordClient, Administration>): Promise<any> {
+    async runCommand(helper: CommandHelper<Client, Administration>): Promise<any> {
         const maintenance = await helper.argHelper.get<Boolean>('maintenance');
 
         let { data } = await StatusPage.getIncidents();
