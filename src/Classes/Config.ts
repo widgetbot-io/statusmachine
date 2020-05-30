@@ -7,25 +7,25 @@ export class Config {
 	@Env('BOT_PREFIX', 'status ')
 	public static readonly botPrefix: string;
 
-	@Env('DATABASE_HOST', '127.0.0.1')
+	@Env('DB_HOST', '127.0.0.1')
 	public static readonly databaseHost: string;
 
-	@Env('DATABASE_PORT', 5432)
+	@Env('DB_PORT', 5432)
 	public static readonly databasePort: number;
 
-	@Env('DATABASE_NAME', 'statuspage')
+	@Env('DB_DATABASE', 'statuspage')
 	public static readonly databaseName: string;
 
-	@Env('DATABASE_USER', 'statuspage')
+	@Env('DB_USER', 'statuspage')
 	public static readonly databaseUser: string;
 
-	@Env('DATABASE_PASS')
+	@Env('DB_PASSWORD')
 	public static readonly databasePass: string;
 
 	@Env('REDIS_HOST', '127.0.0.1')
 	public static readonly redisHost: string;
 
-	@Env('REDIS_PORT', 6370)
+	@Env('REDIS_PORT', 6379)
 	public static readonly redisPort: number;
 
 	@Env('REDIS_DATABASE', 0)
