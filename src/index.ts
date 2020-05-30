@@ -1,6 +1,7 @@
 import {DiscordClient} from "./DiscordClient";
 import {Envuments} from "envuments";
 import {Config} from './Classes/Config';
+import {RedisOptions} from 'ioredis';
 
 new DiscordClient({
     bot: {
@@ -39,7 +40,16 @@ new DiscordClient({
         port: Config.databasePort,
         database: Config.databaseName,
         username: Config.databaseUser,
-        password: Config.databasePass
+        password: Config.databasePass,
+        cache: {
+            type: 'ioredis',
+            options: <RedisOptions>{
+                host: Config.redisHost,
+                port: Config.redisPort,
+                db: Config.redisDatabase,
+                password: Config.redisPass
+            }
+        }
     },
     embeds: {
         color: '#2684ff',
