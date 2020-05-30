@@ -46,7 +46,7 @@ export default class Setup extends BaseCommand {
 				await new Promise(r => setTimeout(() => r(), 2000))
 			} else {
 				pageId = await Setup.askQuestion(Setup.generatePagesMessage(pages), helper, (t) => typeof t === 'number')
-				if (!pageId) return helper.send('You took too long to choose a page.') // TODO: Make a test request to Statuspage.io to verify these are correct
+				if (!pageId) return helper.send('You took too long to choose a page.')
 			}
 
 			await repo.save({
