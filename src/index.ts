@@ -28,7 +28,7 @@ const client = new DiscordClient({
     },
     embeds: {
         color: '#2684ff',
-        statusPageUrl: 'https://WB.statuspage.io',
+        statusPageUrl: 'https://status.widgetbot.ioß',
         thumbnail: 'https://cdn.discordapp.com/icons/299881420891881473/dbca3b639968ac72f6ed64af7f1c747a.png',
         title: 'WidgetBot'
     }
