@@ -19,10 +19,10 @@ export default class extends BaseCommand {
     async runCommand(helper: CommandHelper<DiscordClient, Administration>): Promise<any> {
         const maintenance = await helper.argHelper.get<Boolean>('maintenance');
 
-        const {data} = await StatusPage.getIncidents();
+        let { data } = await StatusPage.getIncidents();
+        data = data.filter(d => maintenance && d.impact === 'maintenance')
 
         if (data.length > 0) {
-
             let textOptions = (data.length === 1) ? ['is', 'incident'] : ['are', 'incidents'];
 
             let embed = new MessageEmbed()
@@ -36,12 +36,13 @@ export default class extends BaseCommand {
                     data.slice(-6) //limit to six entries & sort by date
                         .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
                         .map((incident, index) => {
+                            const term = incident.impact === 'maintenance' ? 'Maintenance' : 'Incident'; // TODO: Show dates for maintenance?
                             return {
-                                name: `\u26A0 Incident #${index + 1}`,
+                                name: `\u26A0 ${term} #${index + 1}`,
                                 value: `${incident.name}\n` +
                                     `Status: ${incident.status}\n` +
                                     `Impact: ${incident.impact}\n` +
-                                    `[View Incident](${incident.shortlink})`,
+                                    `[View ${term}](${incident.shortlink})`,
                                 inline: true
                             }
                         }),
@@ -59,7 +60,7 @@ export default class extends BaseCommand {
         } else if (data.length === 0) {
             let embed = new MessageEmbed()
                 .setColor('#2684ff')
-                .setTitle('View Full Incident Report')
+                .setTitle('View StatusPage')
                 .setURL(helper.client.settings.embeds.statusPageUrl)
                 .setThumbnail(helper.client.settings.embeds.thumbnail)
                 .setAuthor('WidgetBot', helper.client.settings.embeds.thumbnail)
