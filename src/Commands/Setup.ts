@@ -2,6 +2,9 @@ import {BaseCommand, Command, CommandHelper, Administration, FlagArgument} from 
 import {Message} from 'discord.js'
 import {Client} from '../Client';
 import {Settings} from '../Models';
+import {StatusPage} from '../Classes/StatusPage';
+import {GetPages} from '../interfaces/statuspage';
+import {isNumber} from 'util';
 
 @Command({
 	name: 'setup',
@@ -30,8 +33,21 @@ export default class Setup extends BaseCommand {
 			// const role = await Setup.askQuestion('What role would you like to access the bot?', helper)
 			const key = await Setup.askQuestion('What is your Statuspage.io OAuth key?', helper)
 			if (!key) return helper.send('You took too long to specify your OAuth key.')
-			const pageId = await Setup.askQuestion('What is your Statuspage.io Page ID?', helper)
-			if (!pageId) return helper.send('You took too long to specify your Page ID.') // TODO: Make a test request to Statuspage.io to verify these are correct
+
+			const pages = await StatusPage.getPages({ oauthKey: key }).then(r => r.data)
+			let pageId: string | undefined;
+
+			if (pages.length === 0) {
+				return helper.send('No pages are associated with this key.')
+			} else if (pages.length === 1) {
+				const p = pages[0]
+				pageId = p.id
+				await helper.send(`Only one page attached to this page, defaulting to \`${p.name}  - ${p.domain || 'No domain specified'} (${p.id})\``)
+				await new Promise(r => setTimeout(() => r(), 2000))
+			} else {
+				pageId = await Setup.askQuestion(Setup.generatePagesMessage(pages), helper, (t) => typeof t === 'number')
+				if (!pageId) return helper.send('You took too long to choose a page.') // TODO: Make a test request to Statuspage.io to verify these are correct
+			}
 
 			await repo.save({
 				snowflake: helper.guild!.id,
@@ -47,9 +63,13 @@ export default class Setup extends BaseCommand {
 		}
 	}
 
-	static async askQuestion(content: string, helper: CommandHelper<Client, Administration>): Promise<string | undefined> {
+	static generatePagesMessage(pages: GetPages[]): string {
+		return pages.map((p, i) => `[${i +1}] ${p.name}  - ${p.domain || 'No domain specified'} (${p.id})`).join('\n')
+	}
+
+	static async askQuestion(content: string, helper: CommandHelper<Client, Administration>, filter: (...args: any[]) => boolean = () => true): Promise<string | undefined> {
 		await helper.send(content)
-		return (await (await helper.channel.awaitMessages(() => true, { max: 1, time: 30000 })).first()?.delete())?.cleanContent
+		return (await (await helper.channel.awaitMessages(filter, { max: 1, time: 30000 })).first()?.delete())?.cleanContent
 	}
 
 	async hasPermission(message: Message): Promise<boolean> {

@@ -1,9 +1,13 @@
 import axios from 'axios';
 import {Envuments} from 'envuments';
-import {CreateIncidentBody, GetIncidentsReturn, NewIncidentReturn} from '../interfaces/statuspage';
+import {CreateIncidentBody, GetIncidentsReturn, NewIncidentReturn, GetPages} from '../interfaces/statuspage';
 
 interface StatusPageSettings {
     pageId: string,
+    oauthKey: string
+}
+
+interface StatusPageNoPageSettings {
     oauthKey: string
 }
 
@@ -14,6 +18,14 @@ export class StatusPage {
             'Content-Type': 'application/json'
         }
     })
+
+    static async getPages(settings: StatusPageNoPageSettings) {
+        return this.client.get<GetPages[]>('pages', {
+            headers: {
+                'Authorization': `OAuth ${settings.oauthKey}`,
+            }
+        })
+    }
 
     static async getIncidents(settings: StatusPageSettings) {
         return this.client.get<GetIncidentsReturn[]>(`pages/${settings.pageId}/incidents`, {

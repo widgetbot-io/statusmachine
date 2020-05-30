@@ -2,6 +2,7 @@ import {BaseCommand, Command, CommandHelper, Administration, FlagArgument} from 
 import {Message, MessageEmbed} from 'discord.js'
 import {Client} from '../Client';
 import {StatusPage} from '../Classes/StatusPage';
+import {Settings} from '../Models';
 
 @Command({
     name: 'get',
@@ -18,8 +19,11 @@ import {StatusPage} from '../Classes/StatusPage';
 export default class extends BaseCommand {
     async runCommand(helper: CommandHelper<Client, Administration>): Promise<any> {
         const maintenance = await helper.argHelper.get<Boolean>('maintenance');
+        const repo = helper.client.db.getRepository(Settings);
+        const settings = await repo.findOne({ snowflake: helper.guild!.id })
+        if (!settings) return; // TODO: Add some better handling for tis
 
-        let { data } = await StatusPage.getIncidents();
+        let { data } = await StatusPage.getIncidents(settings);
         data = data.filter(d => maintenance && d.impact === 'maintenance')
 
         if (data.length > 0) {
