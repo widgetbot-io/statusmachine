@@ -17,29 +17,34 @@ import {Settings} from '../Models';
 })
 export default class Setup extends BaseCommand {
 	async runCommand(helper: CommandHelper<Client, Administration>) {
-		const override = await helper.argHelper.get('override');
-		const repo = helper.client.db.getRepository(Settings);
-		if (!override) {
-			const settings = repo.findOne({ snowflake: helper.guild!.id })
-			if (settings) return helper.send('You have already setup StatusMachine, use the flag -o to override this and setup the bot again.')
+		let message: Message | undefined;
+		try {
+			const override = await helper.argHelper.get('override');
+			const repo = helper.client.db.getRepository(Settings);
+			if (!override) {
+				const settings = await repo.findOne({ snowflake: helper.guild!.id })
+				if (settings) return helper.send('You have already setup StatusMachine, use the flag -o to override this and setup the bot again.')
+			}
+			message = await helper.channel.send(`Welcome to StatusMachine's setup command.`)
+
+			// const role = await Setup.askQuestion('What role would you like to access the bot?', helper)
+			const key = await Setup.askQuestion('What is your Statuspage.io OAuth key?', helper)
+			if (!key) return helper.send('You took too long to specify your OAuth key.')
+			const pageId = await Setup.askQuestion('What is your Statuspage.io Page ID?', helper)
+			if (!pageId) return helper.send('You took too long to specify your Page ID.') // TODO: Make a test request to Statuspage.io to verify these are correct
+
+			await repo.save({
+				snowflake: helper.guild!.id,
+				oauthKey: key,
+				pageId: pageId,
+			})
+
+			if (message) await message.delete()
+			await helper.send('StatusMachine is now setup!')
+		} catch (e) {
+			if (message) await message.delete()
+			return helper.send('An unexpected error occurred, please report it to my developers (>>support)')
 		}
-
-		const intro = await helper.channel.send(`Welcome to StatusMachine's setup command.`)
-
-		// const role = await Setup.askQuestion('What role would you like to access the bot?', helper)
-		const key = await Setup.askQuestion('What is your Statuspage.io OAuth key?', helper)
-		if (!key) return helper.send('You took too long to specify your OAuth key.')
-		const pageId = await Setup.askQuestion('What is your Statuspage.io Page ID?', helper)
-		if (!pageId) return helper.send('You took too long to specify your Page ID.')
-
-		await repo.save({
-			snowflake: helper.guild!.id,
-			oauthKey: key,
-			pageId: pageId,
-		})
-
-		await intro.delete()
-		await helper.send('StatusMachine is now setup!')
 	}
 
 	static async askQuestion(content: string, helper: CommandHelper<Client, Administration>): Promise<string | undefined> {
