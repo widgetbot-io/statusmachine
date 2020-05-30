@@ -1,9 +1,10 @@
 import {Bot} from 'zenith-ts';
-import {Settings} from './interfaces';
+import {Settings as ISettings} from './interfaces';
 import {Connection, createConnection} from 'typeorm';
 import {RedisOptions} from 'ioredis';
 import {Config} from './Classes/Config';
 import * as Models from './Models';
+import {Settings} from './Models';
 
 const models = Object.keys(Models)
 
@@ -11,13 +12,17 @@ export class Client {
     public bot: Bot<Client> = new Bot(this.settings.bot, this);
     public db!: Connection;
 
-    constructor(public settings: Settings) {}
+    public maintenance: boolean = false;
+    constructor(public settings: ISettings) {}
 
     async setup() {
         try {
             this.db = await createConnection({
                 ...this.settings.database,
-                entities: models,
+                // synchronize: true,
+                entities: [
+                    Settings
+                ],
                 cache: {
                     type: 'ioredis',
                     options: <RedisOptions>{

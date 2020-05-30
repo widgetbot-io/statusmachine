@@ -12,6 +12,5 @@ export class Settings extends BaseEntity {
 	oauthKey!: string;
 
 	@Column()
-	pageId!: number;
-
+	pageId!: string;
 }
