@@ -40,16 +40,7 @@ new DiscordClient({
         port: Config.databasePort,
         database: Config.databaseName,
         username: Config.databaseUser,
-        password: Config.databasePass,
-        cache: {
-            type: 'ioredis',
-            options: <RedisOptions>{
-                host: Config.redisHost,
-                port: Config.redisPort,
-                db: Config.redisDatabase,
-                password: Config.redisPass
-            }
-        }
+        password: Config.databasePass
     },
     embeds: {
         color: '#2684ff',
