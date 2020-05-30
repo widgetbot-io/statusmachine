@@ -1,7 +1,7 @@
-import {DiscordClient} from "./DiscordClient";
+import {Client} from "./Client";
 import {Config} from './Classes/Config';
 
-new DiscordClient({
+new Client({
     bot: {
         token: Config.botToken,
         clientOptions: {},

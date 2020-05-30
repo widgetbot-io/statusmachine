@@ -7,8 +7,8 @@ import * as Models from './Models';
 
 const models = Object.keys(Models)
 
-export class DiscordClient {
-    public bot: Bot<DiscordClient> = new Bot(this.settings.bot, this);
+export class Client {
+    public bot: Bot<Client> = new Bot(this.settings.bot, this);
     public db!: Connection;
 
     constructor(public settings: Settings) {}
