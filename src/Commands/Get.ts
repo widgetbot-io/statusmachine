@@ -1,7 +1,8 @@
 import {BaseCommand, Command, CommandHelper, Administration, FlagArgument} from 'zenith-ts'
 import {Message, MessageEmbed} from 'discord.js'
-import {DiscordClient} from '../DiscordClient';
+import {Client} from '../Client';
 import {StatusPage} from '../Classes/StatusPage';
+import {Settings} from '../Models';
 
 @Command({
     name: 'get',
@@ -16,11 +17,15 @@ import {StatusPage} from '../Classes/StatusPage';
     module: 'Administration'
 })
 export default class extends BaseCommand {
-    async runCommand(helper: CommandHelper<DiscordClient, Administration>): Promise<any> {
+    async runCommand(helper: CommandHelper<Client, Administration>): Promise<any> {
         const maintenance = await helper.argHelper.get<Boolean>('maintenance');
+        const repo = helper.client.db.getRepository(Settings);
+        const settings = await repo.findOne({ snowflake: helper.guild!.id })
+        if (!settings) return; // TODO: Add some better handling for tis
 
-        let { data } = await StatusPage.getIncidents();
+        let { data } = await StatusPage.getIncidents(settings);
         data = data.filter(d => maintenance && d.impact === 'maintenance')
+        console.log(data)
 
         if (data.length > 0) {
             let textOptions = (data.length === 1) ? ['is', 'incident'] : ['are', 'incidents'];
@@ -71,6 +76,6 @@ export default class extends BaseCommand {
     }
 
     async hasPermission(message: Message): Promise<boolean> {
-        return false;
+        return !!message.member && message.member.hasPermission('MANAGE_GUILD', { checkAdmin: true, checkOwner: true })
     }
 }

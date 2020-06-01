@@ -1,9 +1,9 @@
-import {DiscordClient} from "./DiscordClient";
-import {Envuments} from "envuments";
+import {Client} from "./Client";
+import {Config} from './Classes/Config';
 
-const client = new DiscordClient({
+new Client({
     bot: {
-        token: Envuments.get('BOT_TOKEN'),
+        token: Config.botToken,
         clientOptions: {},
         dirs: {
             commands: [`${__dirname}/Commands/**/*.**`],
@@ -24,7 +24,21 @@ const client = new DiscordClient({
             '545581357812678656',
             '96626362277720064'
         ],
-        prefix: 'status '
+        prefix: Config.botPrefix
+    },
+    redis: {
+        host: Config.redisHost,
+        port: Config.redisPort,
+        db: Config.redisDatabase,
+        password: Config.redisPass
+    },
+    database: {
+        type: 'postgres',
+        host: Config.databaseHost,
+        port: Config.databasePort,
+        database: Config.databaseName,
+        username: Config.databaseUser,
+        password: Config.databasePass
     },
     embeds: {
         color: '#2684ff',

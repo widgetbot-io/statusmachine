@@ -1,6 +1,6 @@
 import {BaseCommand, Command, CommandHelper, Administration, FlagArgument} from 'zenith-ts'
 import {Message} from 'discord.js'
-import {DiscordClient} from '../DiscordClient';
+import {Client} from '../Client';
 
 @Command({
     name: 'Incident',
@@ -16,7 +16,7 @@ import {DiscordClient} from '../DiscordClient';
     module: 'Administration'
 })
 export default class extends BaseCommand {
-    async runCommand(helper: CommandHelper<DiscordClient, Administration>) {
+    async runCommand(helper: CommandHelper<Client, Administration>) {
         const maintenance = await helper.argHelper.get<Boolean>('maintenance');
     }
 
