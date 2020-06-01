@@ -4,6 +4,30 @@
   "main": "index.js",
   "repository": "git@slab.venix.dev:venix/statusmachine.git",
   "author": "Daave <daave@widgetbot.io>",
+  "contributors": [
+    {
+      "name": "Daave",
+      "email": "daave@widgetbot.io",
+      "url": "https://daave.dev"
+    },
+    {
+      "name": "Rie Takahashi",
+      "email": "megumin@megu.dev",
+      "url": "https://twitter.com/meguminsama"
+    }
+  ],
+  "maintainers": [
+    {
+      "name": "Daave",
+      "email": "daave@widgetbot.io",
+      "url": "https://daave.dev"
+    },
+    {
+      "name": "Rie Takahashi",
+      "email": "megumin@megu.dev",
+      "url": "https://twitter.com/meguminsama"
+    }
+  ],
   "scripts": {
     "dev": "nodemon",
     "build": "tsc"
@@ -12,9 +36,14 @@
     "axios": "^0.19.2",
     "discord.js": "^12.2.0",
     "envuments": "^1.0.10",
+    "ioredis": "^4.17.3",
+    "pg": "^8.2.1",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.25",
     "zenith-ts": "^0.10.8"
   },
   "devDependencies": {
+    "@types/ioredis": "^4.16.3",
     "@types/node": "^13.13.4",
     "nodemon": "^2.0.2",
     "ts-node": "^8.6.2",
